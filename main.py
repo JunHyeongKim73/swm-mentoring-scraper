@@ -5,6 +5,7 @@ import re
 import time
 import smtplib
 import urllib3
+from datetime import datetime
 from email.mime.text import MIMEText
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -53,11 +54,13 @@ if __name__ == "__main__":
             "username": USERNAME,
         }
 
+        now = datetime.now()
+        now = now.strftime("%Y-%m-%d %H:%M:%S")
         response = session.post(LOGIN_URL, data=login_data2, verify=False)
         if "logout" in response.text:
-            print("로그인 성공")
+            print(now + "   로그인 성공")
         else:
-            print("로그인 실패")
+            print(now + "   로그인 실패")
 
         # 멘토링 데이터 조회
         response = session.get(SEARCH_URL, verify=False)
