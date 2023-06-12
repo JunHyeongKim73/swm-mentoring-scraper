@@ -12,6 +12,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 if __name__ == "__main__":
+    SWM_URL = "https://www.swmaestro.org"
     MAIN_URL = "https://www.swmaestro.org/sw/member/user/forLogin.do?menuNo=200025"
     LOGIN_READY_URL = "https://www.swmaestro.org/sw/member/user/toLogin.do"
     LOGIN_URL = "https://www.swmaestro.org/sw/login.do"
@@ -73,6 +74,7 @@ if __name__ == "__main__":
         latest_mentoring_json = json.loads(latest_mentoring_string)
 
         latest_mentoring_title = latest_mentoring_json['subjectTitle']
+        latest_mentoring_url = latest_mentoring_json['url']
 
         if saved_latest_mentoring != latest_mentoring_title:
             print("새 글이 올라왔어요!")
@@ -80,12 +82,11 @@ if __name__ == "__main__":
             smtpName = "smtp.gmail.com"  # smtp 서버 주소
             smtpPort = 587  # smtp 포트 번호
 
-            msg = MIMEText(latest_mentoring_title)  # MIMEText(text , _charset = "utf8")
+            msg = MIMEText(SWM_URL + latest_mentoring_url)  # MIMEText(text , _charset = "utf8")
 
-            msg['Subject'] = "SW마에스트로 멘토링이 새로 올라왔어요!"
+            msg['Subject'] = latest_mentoring_title
             msg['From'] = SEND_EMAIL
             msg['To'] = RECV_EMAIL
-            print(msg.as_string())
 
             s = smtplib.SMTP(smtpName, smtpPort)  # 메일 서버 연결
             s.starttls()  # TLS 보안 처리
